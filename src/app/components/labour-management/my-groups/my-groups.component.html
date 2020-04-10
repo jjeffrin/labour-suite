@@ -1,0 +1,26 @@
+<h4 class="text-muted">Add New Group</h4>
+<hr>
+<form (ngSubmit)="addGroup()">
+    <div class="form-group">
+        <label for="">Group Name</label>
+        <input type="text" name="groupName" class="form-control" [(ngModel)]="groupName">
+    </div>
+    <div class="form-group">
+        <button class="btn btn-info">Add Group</button>
+    </div>
+</form>
+<h4 class="text-muted">My Groups</h4>
+<hr>
+<div *ngIf="groupList.length; else noGroups">
+    <ul class="list-group">
+        <div *ngFor="let group of groupList">
+            <a routerLink="group/{{group.id}}" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action list-group-item-info">
+                {{group.name}}                
+            </a>
+            <hr>
+        </div>
+    </ul>
+</div>
+<ng-template #noGroups>
+    <h5>No groups to show. Add a new group to continue.</h5>
+</ng-template>

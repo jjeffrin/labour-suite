@@ -1,0 +1,37 @@
+<h4><p><i (click)="navigateToLabourManagement()" style="cursor: pointer;" class="fas fa-arrow-circle-left text-secondary"></i> My People | <button class="btn btn-outline-secondary mr-2" routerLink="add-new"><i class="fas fa-user-plus"></i></button>  <button class="btn btn-outline-secondary" (click)="deleteGroup()"><i class="fas fa-trash"></i></button></p>
+<div class="text-muted">{{groupName}} 
+  <div *ngIf="isLoading" class="spinner-grow text-info" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+</h4>
+
+<hr>
+
+<div *ngIf="labourList?.length; else noLabours">
+    <div *ngFor="let labour of labourList">
+        <div class="card">
+            <div class="card-header">
+              Salary Type: {{labour.payType == "perDay" ? "Per Day" : "Per Month"}}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{labour.labourName}}</h5>
+              <p class="card-text">Fixed Salary: {{labour.salary}}</p>
+              <a routerLink="manage/{{labour.id}}" class="btn btn-primary mr-1">Manage</a>
+              <button (click)="deleteLabour(labour?.id)" class="btn btn-outline-primary"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+          <br>
+    </div>
+</div>
+
+<ng-template #noLabours>
+    <h5>No labours added yet. Click on "Add New" to add new labours.</h5>
+</ng-template>
+
+
+<!-- hr.style13 {
+	height: 10px;
+	border: 0;
+	box-shadow: 0 10px 10px -10px #8c8b8b inset;
+} -->

@@ -1,0 +1,35 @@
+<h4 class="text-muted">Manage {{labourData?.labourName}}'s Salary & Attendance</h4>
+<button (click)="addAttendance()" class="btn btn-info" [disabled]="!attendanceState">Add Attendance</button>
+<br><br>
+<div class="row">
+  <div class="col-6">
+    <h6>Fixed Salary: &#8377;{{labourData?.salary}}</h6>
+    <h6>Balance to pay labour: &#8377;{{balanceAmount}}</h6>
+  </div>
+  <div class="col-6">
+    <h6>Advance Given: &#8377;{{labourData?.advance}}
+    <span style="cursor: pointer;" class="badge badge-secondary" *ngIf="labourData?.advance!=0" (click)="clearAdvance()">Zero out advance</span></h6>
+  </div>
+</div>
+<hr>
+<div *ngIf="attendanceList?.length!=0; else noAttendanceList">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Present Dates</th>
+        <th scope="col">Salary</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of attendanceList; let i = index">
+        <th scope="row">{{i+1}}</th>
+        <td>{{data?.attendanceDate}}</td>
+        <td><button [disabled]="data?.salary" (click)="paySalary(data?.id)" class="btn btn-info">Pay Salary</button></td>
+      </tr>
+    </tbody>
+</table>
+</div>
+<ng-template #noAttendanceList>
+  <h5>No attendance details found for {{labourData?.labourName}}</h5>
+</ng-template>

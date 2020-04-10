@@ -3,7 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebaseConfig: {
+    apiKey: "AIzaSyBy6IBnCqHCDCnTteAORHIFElb9_KuSJJ4",
+    authDomain: "hodportal.firebaseapp.com",
+    databaseURL: "https://hodportal.firebaseio.com",
+    projectId: "hodportal",
+    storageBucket: "hodportal.appspot.com",
+    messagingSenderId: "399862766656",
+    appId: "1:399862766656:web:36769d84b0ad86286093a5"
+  }
 };
 
 /*

@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="jumbotron">
+        <h3>Personal Notes</h3>
+    </div>
+    <form (ngSubmit)="saveContent()">
+        <div class="form-group">
+            <label for="personal-note-field">Write...</label>            
+            <textarea 
+                class="form-control" 
+                id="personal-note-field"
+                rows="5"
+                name="content"
+                [(ngModel)]="content"
+            ></textarea>
+        </div>
+        <button class="btn btn-info">Save</button>
+    </form>
+    <br>
+    <h4>Saved Notes</h4>
+    <hr>
+    <div *ngIf="contentList?.length; else noContents">
+        <div *ngFor="let item of contentList">
+            <div class="card">
+                <div class="card-header">
+                  {{item.timeToDisplay}}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">{{item.content}}</p>
+                </div>
+              </div>
+            <br>
+        </div>
+    </div>
+    <ng-template #noContents><h5>No notes to show.</h5></ng-template>
+</div>

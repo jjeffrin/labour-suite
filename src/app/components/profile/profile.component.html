@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="jumbotron">
+        <div class="row">
+            <!-- Welcome note -->
+            <div class="col-6">
+                <h3>Welcome, <small>{{userDetails?.displayName}}</small></h3>
+                <button class="btn btn-outline-secondary" (click)="signOut()">Logout</button>
+            </div>
+            <!-- Profile picture -->
+            <div class="col-6">
+                <img src="{{userDetails?.photoURL}}" class="rounded-circle float-right" alt="..." style="width: 75px; height: 75px;">
+            </div>
+        </div>
+    </div>
+    <h4>Remainders</h4> 
+    <hr>
+    <p>Nothing to show for now.</p>
+    <h4>Settings</h4>   
+    <hr>
+</div>

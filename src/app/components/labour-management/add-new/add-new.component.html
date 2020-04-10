@@ -1,0 +1,32 @@
+<h4 class="text-muted"><i (click)="navigateToMyPeople()" style="cursor: pointer;" class="fas fa-arrow-circle-left text-secondary"></i> Add New Labour</h4>
+<hr>
+<form [formGroup]="addNewForm" (ngSubmit)="addNew()">
+    <div class="form-group">
+        <label for="">Labour Name</label>
+        <input class="form-control col-lg-6" type="text" formControlName="labourName">
+    </div>
+    <div class="form-group">
+        <label for="">Pay type</label>
+        <select class="form-control col-lg-6" name="payType" id="" formControlName="payType">
+            <option value="perDay">Per Day</option>
+            <option value="perMonth">Per Month</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="">Salary</label>
+        <input class="form-control col-lg-6" type="number" pattern="[0-9]*" formControlName="salary">
+    </div>
+    <div class="form-group">
+        <label for="">Advance given</label>
+        <input class="form-control col-lg-6" type="number" pattern="[0-9]*" formControlName="advance">
+    </div>
+    <div *ngIf="showSuccessMsg" class="alert alert-success" role="alert">
+        <strong>New labour is added!</strong>
+    </div>
+    <button class="btn btn-info">
+        <span *ngIf="!isLoading">Add Labour</span>
+        <div *ngIf="isLoading" class="spinner-grow text-dark" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </button>
+</form>
