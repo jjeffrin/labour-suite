@@ -1,4 +1,4 @@
-<h4 class="text-muted">Manage {{labourData?.labourName}}'s Salary & Attendance</h4>
+<h4 class="text-muted"><i (click)="goBack()" style="cursor: pointer;" class="fas fa-arrow-circle-left text-secondary"></i> Manage {{labourData?.labourName}}'s Salary & Attendance</h4>
 <button (click)="addAttendance()" class="btn btn-info" [disabled]="!attendanceState">Add Attendance</button>
 <br><br>
 <div class="row">

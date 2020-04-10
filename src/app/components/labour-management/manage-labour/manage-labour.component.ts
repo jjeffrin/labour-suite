@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { DatabaseService } from 'src/app/services/database.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { LabourType } from 'src/app/models/LabourType';
@@ -20,7 +21,8 @@ export class ManageLabourComponent implements OnInit {
   
   constructor(
     private databaseService: DatabaseService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) { }
 
   ngOnInit(): void {    
@@ -111,6 +113,10 @@ export class ManageLabourComponent implements OnInit {
     }).catch(() => {
       console.log("Failed");
     });
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   getMonth(month: string): number {
