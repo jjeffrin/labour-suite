@@ -18,6 +18,7 @@ export class ManageLabourComponent implements OnInit {
   attendanceState: boolean;
   attendanceList: any[];
   balanceAmount: number;
+  labourAdvance: string;
   
   constructor(
     private databaseService: DatabaseService,
@@ -49,6 +50,7 @@ export class ManageLabourComponent implements OnInit {
   getLabourInfo() {
     this.databaseService.getLabourData(this.userId, this.groupId, this.labourId).subscribe((data: any) => {
       this.labourData = data;
+      this.labourAdvance = this.labourData.advance;
       console.log(data);
     });
   }
@@ -117,6 +119,19 @@ export class ManageLabourComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  updateAdvance() {
+    if (+this.labourData.advance != +this.labourAdvance) {
+      this.databaseService.updateAdvanceByLabourId(this.userId, this.groupId, this.labourId, this.labourAdvance).then(() => {
+        this.labourData.advance = this.labourAdvance;
+        this.calculateBalanceDetails();
+        console.log("Updated");
+      }).catch(() => {
+        console.log("Failed");
+        this.calculateBalanceDetails();
+      });
+    }
   }
 
   getMonth(month: string): number {

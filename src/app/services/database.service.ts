@@ -120,4 +120,10 @@ export class DatabaseService {
   deleteGroupById(userId: string, groupId: string) {
     return this.database.collection("users").doc(userId).collection("groups").doc(groupId).delete();
   }
+
+  updateAdvanceByLabourId(userId: string, groupId: string, labourId: string, updatedAdvance: string) {
+    return this.database.collection("users").doc(userId).collection("groups").doc(groupId).collection("labours").doc(labourId).update({
+      advance: updatedAdvance
+    });
+  }
 }
