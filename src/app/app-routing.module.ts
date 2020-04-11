@@ -11,6 +11,10 @@ import { MyPeopleComponent } from './components/labour-management/my-people/my-p
 import { AddNewComponent } from './components/labour-management/add-new/add-new.component';
 import { ManageLabourComponent } from './components/labour-management/manage-labour/manage-labour.component';
 import { MyGroupsComponent } from './components/labour-management/my-groups/my-groups.component';
+import { AccountingComponent } from './components/accounting/accounting.component';
+import { AddNewSourceComponent } from './components/add-new-source/add-new-source.component';
+import { AccountingListComponent } from './components/accounting-list/accounting-list.component';
+import { ManageSourceComponent } from './components/manage-source/manage-source.component';
 
 const appRoutes: Routes = [
     {        
@@ -54,6 +58,24 @@ const appRoutes: Routes = [
             {
                 path: 'personal-notes',
                 component: PersonalNotesComponent
+            },
+            {
+                path: 'accounting',
+                component: AccountingComponent,
+                children: [
+                    {
+                        path: '',
+                        component: AccountingListComponent
+                    },
+                    {
+                        path: 'add-new-source',
+                        component: AddNewSourceComponent
+                    },
+                    {
+                        path: 'manage-source/:id',
+                        component: ManageSourceComponent
+                    }
+                ]
             }
         ]
     }    

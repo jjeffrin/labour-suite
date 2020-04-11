@@ -1,4 +1,4 @@
-<h4 class="text-muted">Manage {{labourData?.labourName}}'s Salary & Attendance</h4>
+<h4 class="text-muted"><i (click)="goBack()" style="cursor: pointer;" class="fas fa-arrow-circle-left text-secondary"></i> Manage {{labourData?.labourName}}'s Salary & Attendance</h4>
 <button (click)="addAttendance()" class="btn btn-info" [disabled]="!attendanceState">Add Attendance</button>
 <br><br>
 <div class="row">
@@ -7,8 +7,16 @@
     <h6>Balance to pay labour: &#8377;{{balanceAmount}}</h6>
   </div>
   <div class="col-6">
-    <h6>Advance Given: &#8377;{{labourData?.advance}}
-    <span style="cursor: pointer;" class="badge badge-secondary" *ngIf="labourData?.advance!=0" (click)="clearAdvance()">Zero out advance</span></h6>
+    <h6>Advance Given: 
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">&#8377;</span>
+        </div>
+        <input type="number" pattern="[0-9]*" name="labourAdvance" class="form-control" placeholder="Enter advance amount" value="{{labourData?.advance}}" [(ngModel)]="labourAdvance">
+      </div> 
+      <button class="btn btn-info mr-2" (click)="updateAdvance()">Update Advance</button>
+      <span style="cursor: pointer;" class="badge badge-secondary" *ngIf="labourData?.advance!=0" (click)="clearAdvance()">Zero out advance</span>
+    </h6>
   </div>
 </div>
 <hr>

@@ -23,7 +23,7 @@
     <div *ngIf="showSuccessMsg" class="alert alert-success" role="alert">
         <strong>New labour is added!</strong>
     </div>
-    <button class="btn btn-info">
+    <button class="btn btn-info" [disabled]="!addNewForm.valid">
         <span *ngIf="!isLoading">Add Labour</span>
         <div *ngIf="isLoading" class="spinner-grow text-dark" role="status">
             <span class="sr-only">Loading...</span>

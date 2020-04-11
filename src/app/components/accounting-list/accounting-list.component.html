@@ -1,0 +1,27 @@
+<h4 class="text-muted">
+    <div *ngIf="isLoading" class="spinner-grow text-info" role="status">
+        <span class="sr-only">Loading...</span>
+    </div> My Suppliers & Others 
+    <span><button (click)="navigateToAddSource()" class="btn btn-outline-secondary"><i class="fas fa-user-plus"></i></button></span>
+</h4>
+<hr>
+
+<div *ngIf="sourceList?.length; else noSource">
+    <div *ngFor="let source of sourceList">
+        <div class="card">
+            <div class="card-header">
+              Nature of work: {{source.natureOfWork}}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{source.name}}, {{source.location}}</h5>
+              <a routerLink="manage-source/{{source.id}}" class="btn btn-info mr-1">Manage</a>
+              <button (click)="deleteSource(source?.id)" class="btn btn-danger"><i class="fas fa-trash"></i></button> 
+            </div>
+          </div>
+          <br>
+    </div>
+</div>
+
+<ng-template #noSource>
+    <h4>No source to show. Add new source by clicking the button above.</h4>
+</ng-template>
