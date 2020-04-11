@@ -4,6 +4,7 @@ import 'firebase/firestore';
 import { map } from 'rxjs/operators';
 import { LabourType } from '../models/LabourType';
 import { SourceType } from '../models/SourceType';
+import { RecordType } from '../models/RecordType';
 
 @Injectable({
   providedIn: 'root'
@@ -153,5 +154,24 @@ export class DatabaseService {
 
   getSourceDetailsById(userId: string, sourceId: string) {
     return this.database.collection("users").doc(userId).collection("accounting").doc(sourceId).valueChanges();
+  }
+
+  addNewSourceRecord(userId: string, sourceId: string, recordData: RecordType) {
+    return this.database.collection("users").doc(userId).collection("accounting").doc(sourceId).collection("records").add({
+      description: recordData.description,
+      quantity: recordData.quantity,
+      price: recordData.price,
+      totalPrice: recordData.totalPrice
+    });
+  }
+
+  getAllRecordsBySourceId(userId: string, sourceId: string) {
+    return this.database.collection("users").doc(userId).collection("accounting").doc(sourceId).collection("records").snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as RecordType;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
   }
 }
