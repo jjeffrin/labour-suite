@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import 'firebase/firestore';
 import { map } from 'rxjs/operators';
 import { LabourType } from '../models/LabourType';
+import { SourceType } from '../models/SourceType';
 
 @Injectable({
   providedIn: 'root'
@@ -125,5 +126,32 @@ export class DatabaseService {
     return this.database.collection("users").doc(userId).collection("groups").doc(groupId).collection("labours").doc(labourId).update({
       advance: updatedAdvance
     });
+  }
+
+  addNewSourceByUserId(userId: string, sourceData: SourceType) {
+    return this.database.collection("users").doc(userId).collection("accounting").add({
+      name: sourceData.name,
+      location: sourceData.location,
+      natureOfWork: sourceData.natureOfWork,
+      advance: sourceData.advance
+    });
+  }
+
+  getAccountingListByUserId(userId: string) {
+    return this.database.collection("users").doc(userId).collection("accounting").snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as SourceType;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+
+  deleteSourceById(userId: string, sourceId: string) {
+    return this.database.collection("users").doc(userId).collection("accounting").doc(sourceId).delete();
+  }
+
+  getSourceDetailsById(userId: string, sourceId: string) {
+    return this.database.collection("users").doc(userId).collection("accounting").doc(sourceId).valueChanges();
   }
 }

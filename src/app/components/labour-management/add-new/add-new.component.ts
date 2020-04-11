@@ -53,7 +53,7 @@ export class AddNewComponent implements OnInit {
       this.showSuccessMsg = true;
       setTimeout(() => {
         this.showSuccessMsg = false;
-      }, 3000);
+      }, 5000);
     }).catch(() => {
       console.log("error");
     });

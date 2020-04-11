@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
@@ -23,6 +24,10 @@ import { AddNewComponent } from './components/labour-management/add-new/add-new.
 import { MyPeopleComponent } from './components/labour-management/my-people/my-people.component';
 import { ManageLabourComponent } from './components/labour-management/manage-labour/manage-labour.component';
 import { MyGroupsComponent } from './components/labour-management/my-groups/my-groups.component';
+import { AccountingComponent } from './components/accounting/accounting.component';
+import { AddNewSourceComponent } from './components/add-new-source/add-new-source.component';
+import { AccountingListComponent } from './components/accounting-list/accounting-list.component';
+import { ManageSourceComponent } from './components/manage-source/manage-source.component';
 
 @NgModule({
   declarations: [
@@ -37,9 +42,14 @@ import { MyGroupsComponent } from './components/labour-management/my-groups/my-g
     MyPeopleComponent,
     ManageLabourComponent,
     MyGroupsComponent,
+    AccountingComponent,
+    AddNewSourceComponent,
+    AccountingListComponent,
+    ManageSourceComponent,
   ],
   imports: [
     BrowserModule,
+    NgbModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
