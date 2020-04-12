@@ -13,14 +13,25 @@
         </div>
         <input type="number" pattern="[0-9]*" name="labourAdvance" class="form-control" placeholder="Enter advance amount" value="{{sourceData?.advance}}" [(ngModel)]="sourceAdvance">
       </div> 
-    <button class="btn btn-info mt-2" [disabled]="sourceData?.advance == sourceAdvance">Update Advance</button>
+      <div class="btn-group">
+        <button class="btn btn-info mt-2" [disabled]="sourceData?.advance == sourceAdvance">Update Advance</button>
+        <button type="button" class="btn btn-secondary mt-2 ml-2" data-toggle="modal" data-target="#staticBackdrop">Add New Record</button>
+      </div>    
 </div>
+
+<h5 class="text-muted">Records</h5>
+<hr>
+<div *ngFor="let key of recordList">
+    
+</div>
+
+<ng-template #noRecords>
+    <p>No records to show.</p>
+</ng-template>
 
 <!-- Modal Popup -->
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#staticBackdrop">
-    Add New Record
-  </button>
+
   
   <!-- Modal -->
   <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">

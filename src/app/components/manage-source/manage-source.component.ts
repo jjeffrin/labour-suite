@@ -5,6 +5,7 @@ import { DatabaseService } from 'src/app/services/database.service';
 import { SourceType } from 'src/app/models/SourceType';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { RecordType } from 'src/app/models/RecordType';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-manage-source',
@@ -18,6 +19,7 @@ export class ManageSourceComponent implements OnInit {
   sourceData: SourceType;
   sourceAdvance: string;
   addNewForm: FormGroup;
+  recordList: any;
 
   constructor(
     private _location: Location,
@@ -57,6 +59,17 @@ export class ManageSourceComponent implements OnInit {
   getRecords() {
     this._databaseService.getAllRecordsBySourceId(this.currentUser, this.sourceId).subscribe((data: RecordType[]) => {
       console.log(data);
+      let grouped =  _.mapValues(_.groupBy(data, 'date'),
+      clist => clist.map(car => _.omit(car, 'date')));
+      this.recordList = grouped;
+      console.log(this.recordList);
+      for (var key in this.recordList) {
+        var keyName = key;
+        console.log(this.recordList[keyName].length);
+        this.recordList[keyName].forEach(element => {
+          console.log(element);
+        });
+      }
     });
   }
 

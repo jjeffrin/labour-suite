@@ -158,6 +158,7 @@ export class DatabaseService {
 
   addNewSourceRecord(userId: string, sourceId: string, recordData: RecordType) {
     return this.database.collection("users").doc(userId).collection("accounting").doc(sourceId).collection("records").add({
+      date: new Date().toDateString(),
       description: recordData.description,
       quantity: recordData.quantity,
       price: recordData.price,
