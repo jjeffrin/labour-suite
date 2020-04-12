@@ -21,18 +21,17 @@
 
 <h5 class="text-muted">Records</h5>
 <hr>
-<div *ngFor="let key of recordList">
-    
-</div>
+<!-- <div *ngFor="let record of recordList | keyvalue">
+  <h6 class="text-muted">{{record.key}}</h6>
+  <div *ngFor="let data of record.value">
+    {{data.price}}
+  </div>
+  <br>
+</div> -->
 
-<ng-template #noRecords>
-    <p>No records to show.</p>
-</ng-template>
 
 <!-- Modal Popup -->
-<!-- Button trigger modal -->
-
-  
+<!-- Button trigger modal -->  
   <!-- Modal -->
   <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

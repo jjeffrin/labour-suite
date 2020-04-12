@@ -62,14 +62,6 @@ export class ManageSourceComponent implements OnInit {
       let grouped =  _.mapValues(_.groupBy(data, 'date'),
       clist => clist.map(car => _.omit(car, 'date')));
       this.recordList = grouped;
-      console.log(this.recordList);
-      for (var key in this.recordList) {
-        var keyName = key;
-        console.log(this.recordList[keyName].length);
-        this.recordList[keyName].forEach(element => {
-          console.log(element);
-        });
-      }
     });
   }
 
