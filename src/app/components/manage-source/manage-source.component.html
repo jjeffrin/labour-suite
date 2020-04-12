@@ -18,17 +18,48 @@
         <button type="button" class="btn btn-secondary mt-2 ml-2" data-toggle="modal" data-target="#staticBackdrop">Add New Record</button>
       </div>    
 </div>
-
+<p>Balance To Pay: &#8377;{{calculateBalanceToPay()}}</p>
+<!-- <hr> -->
 <h5 class="text-muted">Records</h5>
 <hr>
-<!-- <div *ngFor="let record of recordList | keyvalue">
-  <h6 class="text-muted">{{record.key}}</h6>
-  <div *ngFor="let data of record.value">
-    {{data.price}}
+<div *ngFor="let record of recordList | keyvalue">
+  <div class="card">
+    <h6 class="card-header">{{record.key}} | Total expenses : &#8377;{{calculatePerDayExpense(record.key).toLocaleString("en-IN")}}</h6>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Descr.</th>
+              <th scope="col">Qty.</th>
+              <th scope="col">Price (&#8377;)</th>
+              <th scope="col">Total Price (&#8377;)</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of record.value; let i=index">
+              <th scope="row">{{i+1}}</th>
+              <td>{{data.description}}</td>
+              <td>{{data.quantity}}</td>
+              <td>{{data.price.toLocaleString("en-IN")}}</td>
+              <td>{{data.totalPrice.toLocaleString("en-IN")}}</td>
+              <td>
+                <div class="btn-group">
+                  <button data-toggle="modal" href="#updateModal" (click)="fillDataInUpdatePopup(data)" class="btn btn-secondary btn-sm mr-2"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-secondary btn-sm" (click)="deleteSourceRecord(data.id)"><i class="fas fa-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+    </div>
   </div>
   <br>
-</div> -->
-
+</div>
 
 <!-- Modal Popup -->
 <!-- Button trigger modal -->  
@@ -43,7 +74,15 @@
           </button>
         </div>
         <div class="modal-body">
-          <!-- Form -->
+          <!-- Form -->          
+            <div class="form-group">
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="selectedDate" ngbDatepicker #d="ngbDatepicker">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="far fa-calendar-alt"></i></button>
+                </div>
+              </div>
+            </div>
             <form [formGroup]="addNewForm">
               <div class="form-group">
                 <label for="">Item Description</label>
@@ -51,11 +90,11 @@
               </div>
               <div class="form-group">
                   <label for="">Quantity</label>
-                  <input class="form-control" type="number" pattern="[0-9]*" formControlName="quantity" (input)="calculateTotalPriceInARecord()">
+                  <input class="form-control" type="number" pattern="[0-9]*" formControlName="quantity" (input)="calculateTotalPriceInARecord(addNewForm)">
               </div>
               <div class="form-group">
                 <label for="">Price for 1 No.</label>
-                <input class="form-control" type="number" pattern="[0-9]*" formControlName="price" (input)="calculateTotalPriceInARecord()">
+                <input class="form-control" type="number" pattern="[0-9]*" formControlName="price" (input)="calculateTotalPriceInARecord(addNewForm)">
               </div>
               <div class="form-group">
                 <label for="">Total Price</label>
@@ -66,10 +105,52 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger" (click)="clearFormValues()">Clear</button>
+          <button type="button" class="btn btn-danger" (click)="clearFormValues(addNewForm)">Clear</button>
           <button type="button" class="btn btn-success" data-dismiss="modal" (click)="saveSourceRecord()" [disabled]="!addNewForm.valid">Save Record</button>
         </div>
       </div>
     </div>
   </div>
 <!-- Modal Popup -->
+
+<!-- Update Popup -->
+<div class="modal fade" id="updateModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Update Record</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Form -->
+          <form [formGroup]="updateForm">
+            <div class="form-group">
+              <label for="">Item Description</label>
+              <input class="form-control" type="text" formControlName="description">
+            </div>
+            <div class="form-group">
+                <label for="">Quantity</label>
+                <input class="form-control" type="number" pattern="[0-9]*" formControlName="quantity" (input)="calculateTotalPriceInARecord(updateForm)">
+            </div>
+            <div class="form-group">
+              <label for="">Price for 1 No.</label>
+              <input class="form-control" type="number" pattern="[0-9]*" formControlName="price" (input)="calculateTotalPriceInARecord(updateForm)">
+            </div>
+            <div class="form-group">
+              <label for="">Total Price</label>
+              <input class="form-control" type="number" pattern="[0-9]*" formControlName="totalPrice">
+            </div>
+          </form>
+        <!-- Form -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="clearFormValues(updateForm)">Clear</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="updateSourceRecord()" [disabled]="!updateForm.valid">Update Record</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Update Popup -->

@@ -156,9 +156,29 @@ export class DatabaseService {
     return this.database.collection("users").doc(userId).collection("accounting").doc(sourceId).valueChanges();
   }
 
-  addNewSourceRecord(userId: string, sourceId: string, recordData: RecordType) {
+  addNewSourceRecord(userId: string, sourceId: string, recordData: RecordType, date: string) {
     return this.database.collection("users").doc(userId).collection("accounting").doc(sourceId).collection("records").add({
-      date: new Date().toDateString(),
+      date: date == "" ? new Date().toDateString() : date,
+      description: recordData.description,
+      quantity: recordData.quantity,
+      price: recordData.price,
+      totalPrice: recordData.totalPrice,
+      time: new Date(date == "" ? new Date().toDateString() : date)
+    });
+  }
+
+  getAllRecordsBySourceId(userId: string, sourceId: string) {
+    return this.database.collection("users").doc(userId).collection("accounting").doc(sourceId).collection("records", ref => ref.orderBy('time', 'desc')).snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as RecordType;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+
+  updateSourceRecordByRecordId(userId: string, sourceId: string, recordId: string, recordData: RecordType) {
+    return this.database.collection("users").doc(userId).collection("accounting").doc(sourceId).collection("records").doc(recordId).update({
       description: recordData.description,
       quantity: recordData.quantity,
       price: recordData.price,
@@ -166,13 +186,7 @@ export class DatabaseService {
     });
   }
 
-  getAllRecordsBySourceId(userId: string, sourceId: string) {
-    return this.database.collection("users").doc(userId).collection("accounting").doc(sourceId).collection("records").snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as RecordType;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-      }))
-    );
+  deleteSourceRecordByRecordId(userId: string, sourceId: string, recordId: string) {
+    return this.database.collection("users").doc(userId).collection("accounting").doc(sourceId).collection("records").doc(recordId).delete();
   }
 }
