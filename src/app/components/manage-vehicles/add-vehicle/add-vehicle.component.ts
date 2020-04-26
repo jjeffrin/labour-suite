@@ -56,4 +56,8 @@ export class AddVehicleComponent implements OnInit {
     return (<FormArray>this.addNewVehicleForm.get('properties')).controls;
   }
 
+  saveVehicle() {
+    console.log(this.addNewVehicleForm);
+  }
+
 }
