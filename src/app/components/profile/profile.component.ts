@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
 export class ProfileComponent implements OnInit {
 
   userDetails: any;
+  currentUser: string;
+  currentUserName: string;
+  currentUserImgUrl: string;
 
   constructor(
     private authService: AuthService,
@@ -17,14 +20,15 @@ export class ProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.authService.checkIfUserLoggedIn().authState.subscribe(user => {
-      console.log(user);
-      this.userDetails = user;
-    });
+    this.currentUserName = localStorage.getItem("currentUserName");
+    this.currentUserImgUrl = localStorage.getItem("currentUserImgUrl");
   }
 
   signOut() {
     this.authService.signOut().then(() => {
+      localStorage.removeItem("currentUser");
+      localStorage.removeItem("currentUserName");
+      localStorage.removeItem("currentUserImgUrl");
       this.router.navigateByUrl('');
     });
   }
