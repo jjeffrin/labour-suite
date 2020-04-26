@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { DatabaseService } from 'src/app/services/database.service';
+import { VehicleType } from 'src/app/models/VehicleType';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -7,9 +10,38 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VehicleListComponent implements OnInit {
 
-  constructor() { }
+  isLoading: boolean = false;
+  currentUser: string;
+  vehicleList: VehicleType[] = [];
+
+  constructor(
+    private _router: Router,
+    private _databaseService: DatabaseService
+  ) { }
 
   ngOnInit(): void {
+    this.currentUser = localStorage.getItem("currentUser");
+    this.getVehicleList();
   }
 
+  private _toggleLoading(): void {
+    this.isLoading = !this.isLoading;
+  }
+
+  goBack() {
+    this._router.navigateByUrl('profile');
+  }
+
+  navigateToAddNewVehicle() {
+    this._router.navigateByUrl('manage-vehicles/add-vehicle');
+  }
+
+  getVehicleList(): void {
+    this._toggleLoading();
+    this._databaseService.getAllVehiclesByUserId(this.currentUser).subscribe((data) => {
+      console.log(data);
+      this.vehicleList = data;
+      this._toggleLoading();
+    });
+  }
 }

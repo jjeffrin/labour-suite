@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { VehicleType } from 'src/app/models/VehicleType';
+import { DatabaseService } from 'src/app/services/database.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-vehicle',
@@ -12,14 +15,27 @@ export class AddVehicleComponent implements OnInit {
   fcDateValue: NgbDateStruct;
   insuranceDateValue: NgbDateStruct;
   addNewVehicleForm: FormGroup;
-  addNewPropertyForm: FormGroup;
   isLoading: boolean = false;
+  currentUser: string;
+  showSuccessMsg: boolean = false;
+  newVehicle: VehicleType = {
+    vehicleName: '',
+    vehicleNumber: '',
+    properties: [],
+    fcDate: '',
+    insuranceDate: ''
+  };
 
-  constructor() { }
+  constructor(
+    private _databaseService: DatabaseService,
+    private _router: Router
+  ) { }
 
   ngOnInit(): void {
     // Show loading in UI
     this._toggleLoading();
+    // Get current user ID
+    this.currentUser = localStorage.getItem("currentUser");
     this.initialiseAddNewForm();
     // Stop loading in UI
     this._toggleLoading();
@@ -57,7 +73,44 @@ export class AddVehicleComponent implements OnInit {
   }
 
   saveVehicle() {
-    console.log(this.addNewVehicleForm);
+    this._toggleLoading();
+    let vehicleData = this.addNewVehicleForm.value;
+    let fcDate = new Date(vehicleData.fcDate.year, vehicleData.fcDate.month-1, vehicleData.fcDate.day).toDateString();
+    let insuranceDate = new Date(vehicleData.insuranceDate.year, vehicleData.insuranceDate.month-1, vehicleData.insuranceDate.day).toDateString();
+    this.newVehicle.vehicleName = vehicleData.vehicleName;
+    this.newVehicle.vehicleNumber = vehicleData.vehicleNumber;
+    this.newVehicle.properties = vehicleData.properties;
+    this.newVehicle.fcDate = fcDate;
+    this.newVehicle.insuranceDate = insuranceDate;
+    this._databaseService.saveVehicleByUserId(this.currentUser, this.newVehicle).then(() => {
+      this.addNewVehicleForm.reset();
+      this._toggleLoading();
+      this.showSuccessMsg = true;
+      setTimeout(() => {
+        this.showSuccessMsg = false;
+      }, 5000);
+    }).catch((err) => {
+      console.log(err);
+      this._toggleLoading();
+    });
+  }
+
+  deleteProperty(index: number): void {
+    console.log(index);
+    (<FormArray>this.addNewVehicleForm.get('properties')).removeAt(index);
+  }
+
+  showDeleteButton(): boolean {
+    if ((<FormArray>this.addNewVehicleForm.get('properties')).length > 1) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  goBack(): void {
+    this._router.navigateByUrl('manage-vehicles');
   }
 
 }

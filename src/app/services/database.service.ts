@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { LabourType } from '../models/LabourType';
 import { SourceType } from '../models/SourceType';
 import { RecordType } from '../models/RecordType';
+import { VehicleType } from '../models/VehicleType';
 
 @Injectable({
   providedIn: 'root'
@@ -188,5 +189,25 @@ export class DatabaseService {
 
   deleteSourceRecordByRecordId(userId: string, sourceId: string, recordId: string) {
     return this.database.collection("users").doc(userId).collection("accounting").doc(sourceId).collection("records").doc(recordId).delete();
+  }
+
+  saveVehicleByUserId(userId: string, vehicleData: VehicleType) {
+    return this.database.collection("users").doc(userId).collection("vehicles").add({
+      name: vehicleData.vehicleName,
+      number: vehicleData.vehicleNumber,
+      properties: vehicleData.properties,
+      fcDate: vehicleData.fcDate,
+      insuranceDate: vehicleData.insuranceDate
+    });
+  }
+
+  getAllVehiclesByUserId(userId: string) {
+    return this.database.collection("users").doc(userId).collection("vehicles").snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as VehicleType;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
   }
 }

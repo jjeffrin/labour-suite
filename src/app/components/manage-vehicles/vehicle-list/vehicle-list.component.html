@@ -1,1 +1,27 @@
-<p>vehicle-list works!</p>
+<h4 class="text-muted">
+    <span><i style="cursor: pointer;" (click)="goBack()" class="fas fa-arrow-circle-left"></i></span>
+    Vehicle List 
+    <i style="cursor: pointer;" class="fas fa-plus-circle" (click)="navigateToAddNewVehicle()"></i>
+    <div *ngIf="isLoading" class="spinner-grow text-info ml-3" role="status">
+    <span class="sr-only">Loading...</span>
+</div></h4>
+<hr>
+
+<div *ngIf="vehicleList.length>0; else noVehicles">
+    <div *ngFor="let vehicle of vehicleList">
+        <div class="card">
+            <h5 class="card-header">{{vehicle?.name}}</h5>
+            <div class="card-body">
+              <h5 class="card-title">Number: {{vehicle?.number}}</h5>
+              <p class="card-text">FC Date: {{vehicle?.fcDate}}</p>
+              <p class="card-text">Insurance Date: {{vehicle?.insuranceDate}}</p>
+              <a href="#" class="btn btn-primary">Edit information</a>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>
+
+<ng-template #noVehicles>
+    <h6>No vehicles added yet.</h6>
+</ng-template>

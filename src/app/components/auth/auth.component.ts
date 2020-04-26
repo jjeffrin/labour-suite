@@ -17,17 +17,25 @@ export class AuthComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.authService.checkIfUserLoggedIn().onAuthStateChanged((user) => {
-      if (user) {
-        this.route.navigateByUrl('profile');
-      }
-    });
+    if (localStorage.getItem("currentUser")) {
+      this.route.navigateByUrl('profile');
+    }
+    // this.authService.checkIfUserLoggedIn().onAuthStateChanged((user) => {
+    //   if (user) {
+    //     this.route.navigateByUrl('profile');
+    //   }
+    // });
   }
 
   loginWithGoogle() {
     this.authService.googleLogin().then((data) => {
       console.log(data.user);
       localStorage.setItem("currentUser", data.user.uid);
+      localStorage.setItem("currentUserName", data.user.displayName);
+      localStorage.setItem("currentUserImgUrl", data.user.photoURL);
+      if (localStorage.getItem("currentUser")) {
+        this.route.navigateByUrl('profile');
+      }
     });
   }
 
