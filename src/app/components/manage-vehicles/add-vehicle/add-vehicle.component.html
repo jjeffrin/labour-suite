@@ -1,0 +1,40 @@
+<h4 class="text-muted">Add Vehicle <div *ngIf="isLoading" class="spinner-grow text-info" role="status">
+    <span class="sr-only">Loading...</span>
+</div></h4>
+<hr>
+<!-- Form -->
+<form [formGroup]="addNewVehicleForm">
+<div class="form-group">
+    <label for="">Vehicle Name</label>
+    <input class="form-control" type="text" formControlName="vehicleName">
+</div>
+<div class="form-group">
+    <label for="">Vehicle Number</label>
+    <input class="form-control" type="text" formControlName="vehicleNumber">
+</div>
+<label for="">FC Date</label>
+<div class="input-group">                    
+    <input class="form-control" placeholder="yyyy-mm-dd" formControlName="fcDate" ngbDatepicker #fcDateVal="ngbDatepicker">
+    <div class="input-group-append">
+    <button class="btn btn-outline-secondary" (click)="fcDateVal.toggle()" type="button"><i class="far fa-calendar-alt"></i></button>
+    </div>
+</div><br>
+<label for="">Insurance Date</label>
+<div class="input-group">                    
+    <input class="form-control" placeholder="yyyy-mm-dd" formControlName="insuranceDate" ngbDatepicker #insuranceDateVal="ngbDatepicker">
+    <div class="input-group-append">
+    <button class="btn btn-outline-secondary" (click)="insuranceDateVal.toggle()" type="button"><i class="far fa-calendar-alt"></i></button>
+    </div>
+</div>
+<div class="form-group mt-3" formArrayName="properties">
+    <label for="">Properties</label>
+    <div *ngFor="let property of getProperties(); let i=index">
+        <div [formGroupName]=i>
+            <input class="form-control" type="text" formControlName="property">
+            <input class="form-control" type="text" formControlName="price">
+        </div>
+    </div>
+</div>
+<button class="btn btn-info btn-small mt-2" (click)="addProperty()">Add Property</button>
+</form>
+<!-- Form -->

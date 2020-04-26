@@ -28,6 +28,9 @@ import { AccountingComponent } from './components/accounting/accounting.componen
 import { AddNewSourceComponent } from './components/add-new-source/add-new-source.component';
 import { AccountingListComponent } from './components/accounting-list/accounting-list.component';
 import { ManageSourceComponent } from './components/manage-source/manage-source.component';
+import { ManageVehiclesComponent } from './components/manage-vehicles/manage-vehicles.component';
+import { AddVehicleComponent } from './components/manage-vehicles/add-vehicle/add-vehicle.component';
+import { VehicleListComponent } from './components/manage-vehicles/vehicle-list/vehicle-list.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,9 @@ import { ManageSourceComponent } from './components/manage-source/manage-source.
     AddNewSourceComponent,
     AccountingListComponent,
     ManageSourceComponent,
+    ManageVehiclesComponent,
+    AddVehicleComponent,
+    VehicleListComponent,
   ],
   imports: [
     BrowserModule,

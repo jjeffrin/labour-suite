@@ -15,6 +15,9 @@ import { AccountingComponent } from './components/accounting/accounting.componen
 import { AddNewSourceComponent } from './components/add-new-source/add-new-source.component';
 import { AccountingListComponent } from './components/accounting-list/accounting-list.component';
 import { ManageSourceComponent } from './components/manage-source/manage-source.component';
+import { ManageVehiclesComponent } from './components/manage-vehicles/manage-vehicles.component';
+import { AddVehicleComponent } from './components/manage-vehicles/add-vehicle/add-vehicle.component';
+import { VehicleListComponent } from './components/manage-vehicles/vehicle-list/vehicle-list.component';
 
 const appRoutes: Routes = [
     {        
@@ -74,6 +77,20 @@ const appRoutes: Routes = [
                     {
                         path: 'manage-source/:id',
                         component: ManageSourceComponent
+                    }
+                ]
+            },
+            {
+                path: 'manage-vehicles',
+                component: ManageVehiclesComponent,
+                children: [
+                    {
+                        path: '',
+                        component: VehicleListComponent
+                    },
+                    {
+                        path: 'add-vehicle',
+                        component: AddVehicleComponent
                     }
                 ]
             }
