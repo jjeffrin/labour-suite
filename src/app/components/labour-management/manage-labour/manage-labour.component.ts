@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { DatabaseService } from 'src/app/services/database.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { LabourType } from 'src/app/models/LabourType';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-manage-labour',
@@ -19,6 +20,7 @@ export class ManageLabourComponent implements OnInit {
   attendanceList: any[];
   balanceAmount: number;
   labourAdvance: string;
+  selectedProxyDate: NgbDateStruct; 
   
   constructor(
     private databaseService: DatabaseService,
@@ -132,6 +134,16 @@ export class ManageLabourComponent implements OnInit {
         this.calculateBalanceDetails();
       });
     }
+  }
+
+  addProxyAttendance() {
+    let { year, month, day } = this.selectedProxyDate;
+    let dateToReturn = new Date(year, month-1, day).toDateString();
+    this.databaseService.addLabourProxyAttendance(this.userId, this.groupId, this.labourId, dateToReturn).then(() => {
+      console.log("Updated");
+    }).catch(() => {
+      console.log("Failed");
+    });
   }
 
   getMonth(month: string): number {

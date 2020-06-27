@@ -6,6 +6,8 @@ import { LabourType } from '../models/LabourType';
 import { SourceType } from '../models/SourceType';
 import { RecordType } from '../models/RecordType';
 import { VehicleType } from '../models/VehicleType';
+import { RemainderType } from '../models/RemainderType';
+import { orderBy } from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -104,6 +106,14 @@ export class DatabaseService {
     });
   }
 
+  addLabourProxyAttendance(userId: string, groupId: string, labourId: string, dateToSet: string) {
+    return this.database.collection("users").doc(userId).collection("groups").doc(groupId).collection("labours").doc(labourId).collection("attendance").add({
+      timeAdded: Date.now(),
+      salary: false,
+      attendanceDate: dateToSet
+    });
+  }
+
   paySalaryForDay(userId: string, groupId: string, labourId: string, dayId: string) {
     return this.database.collection("users").doc(userId).collection("groups").doc(groupId).collection("labours").doc(labourId).collection("attendance").doc(dayId).update({
       salary: true
@@ -193,8 +203,18 @@ export class DatabaseService {
 
   saveVehicleByUserId(userId: string, vehicleData: VehicleType) {
     return this.database.collection("users").doc(userId).collection("vehicles").add({
-      name: vehicleData.vehicleName,
-      number: vehicleData.vehicleNumber,
+      vehicleName: vehicleData.vehicleName,
+      vehicleNumber: vehicleData.vehicleNumber,
+      properties: vehicleData.properties,
+      fcDate: vehicleData.fcDate,
+      insuranceDate: vehicleData.insuranceDate
+    });
+  }
+
+  updateVehicleByUserId(userId: string, vehicleId: string, vehicleData: VehicleType) {
+    return this.database.collection("users").doc(userId).collection("vehicles").doc(vehicleId).update({
+      vehicleName: vehicleData.vehicleName,
+      vehicleNumber: vehicleData.vehicleNumber,
       properties: vehicleData.properties,
       fcDate: vehicleData.fcDate,
       insuranceDate: vehicleData.insuranceDate
@@ -205,6 +225,149 @@ export class DatabaseService {
     return this.database.collection("users").doc(userId).collection("vehicles").snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as VehicleType;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+
+  saveRemainders(userId: string, remainder: RemainderType) {
+    return this.database.collection("users").doc(userId).collection("remainders").add({
+      title: remainder.title,
+      date: remainder.date,
+      active: remainder.active,
+      lastUpdated: new Date().getFullYear()
+    });
+  }
+
+  getRemainders(userId: string) {
+    return this.database.collection("users").doc(userId).collection("remainders").snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as RemainderType;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+
+  updateRemainderById(userId: string, remainder: RemainderType) {
+    let oldDate = new Date(remainder.date);
+    return this.database.collection("users").doc(userId).collection("remainders").doc(remainder.id).update({
+      active: false,
+      date: new Date(oldDate.getFullYear() + 1, oldDate.getMonth(), oldDate.getDate()).toDateString()
+    });
+  }
+
+  getVehicleDetailsById(userId: string, vehicleId: string) {
+    return this.database.collection("users").doc(userId).collection("vehicles").doc(vehicleId).valueChanges();
+  }
+
+  addNewRental(userId: string, name: string, natureOfWork: string, location: string) {
+    return this.database.collection("users").doc(userId).collection("rentals").add({
+      name: name,
+      natureOfWork: natureOfWork,
+      location: location
+    });
+  }
+
+  getAllRentals(userId: string) {
+    return this.database.collection("users").doc(userId).collection("rentals").snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as RemainderType;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+
+  getRentalInfoById(userId: string, rentalId: string) {
+    return this.database.collection("users").doc(userId).collection("rentals").doc(rentalId).valueChanges();
+  }
+
+  deleteRentalById(userId: string, rentalId: string) {
+    return this.database.collection("users").doc(userId).collection("rentals").doc(rentalId).delete();
+  }
+
+  saveRentalRecordById(userId: string, rentalId: string, vehicle: string, prop: string, price: number, dateToSet: string) {
+    return this.database.collection("users").doc(userId).collection("rentals").doc(rentalId).collection("records").add({
+      vehicleName: vehicle,
+      property: prop,
+      price: price,
+      recordDate: dateToSet,
+      isComplete: false,
+      timestamp: Date.now()
+    });
+  }
+
+  getRentalRecordsByRentalId(userId: string, rentalId: string) {
+    return this.database.collection("users").doc(userId).collection("rentals").doc(rentalId).collection("records").snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+
+  updateDriverFeeByUserId(userId: string, fee: number) {
+    return this.database.collection("users").doc(userId).collection("others").doc("driverFee").set({
+      value: fee
+    });
+  }
+
+  getDriverFeeByUserId(userId: string) {
+    return this.database.collection("users").doc(userId).collection("others").doc("driverFee").valueChanges();
+  }
+
+  completeRentalRecordById(userId: string, rentalId: string, recordId: string) {
+    return this.database.collection("users").doc(userId).collection("rentals").doc(rentalId).collection("records").doc(recordId).update({
+      isComplete: true
+    });
+  }
+
+  deleteRentalRecordById(userId: string, rentalId: string, recordId: string) {
+    return this.database.collection("users").doc(userId).collection("rentals").doc(rentalId).collection("records").doc(recordId).delete();
+  }
+
+  deleteVehicleByVehicleId(userId: string, vehicleId: string) {
+    return this.database.collection("users").doc(userId).collection("vehicles").doc(vehicleId).delete();
+  }
+  
+  getAllMileageList(userId: string) {
+    return this.database.collection("users").doc(userId).collection("mileage").snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+
+  addToMileageList(userId: string, vehicleName: string) {
+    return this.database.collection("users").doc(userId).collection("mileage").add({
+      name: vehicleName
+    });
+  }
+
+  getVehicleNameByMileageId(userId: string, vehicleId: string) {
+    return this.database.collection("users").doc(userId).collection("mileage").doc(vehicleId).valueChanges();
+  }
+
+  addNewMileageRecord(userId: string, vehicleId: string, amount: number, reading: number, litre: number) {
+    return this.database.collection("users").doc(userId).collection("mileage").doc(vehicleId).collection("records").add({
+      amount: amount,
+      reading: reading,
+      litre: litre,
+      dateToDisplay: new Date().toDateString(),
+      timestamp: Date.now(),
+      mileage: 0
+    });
+  }
+
+  getAllMileageRecordsByVehicleId(userId: string, vehicleId: string) {
+    return this.database.collection("users").doc(userId).collection("mileage").doc(vehicleId).collection("records", ref => ref.orderBy('timestamp', 'asc')).snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
         const id = a.payload.doc.id;
         return { id, ...data };
       }))

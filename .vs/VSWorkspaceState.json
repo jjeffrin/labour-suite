@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\components",
+    "\\src\\app\\components\\rentals",
+    "\\src\\app\\components\\rentals\\add-rental-record"
+  ],
+  "SelectedNode": "\\src\\app\\components\\rentals\\add-rental-record\\add-rental-record.component.ts",
+  "PreviewInSolutionExplorer": false
+}

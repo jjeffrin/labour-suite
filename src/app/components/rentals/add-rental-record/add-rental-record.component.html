@@ -1,0 +1,43 @@
+<h4 class="text-muted">
+  <span><i style="cursor: pointer;" (click)="goBack()" class="fas fa-arrow-circle-left"></i></span>
+  Add Rental Record
+</h4>
+<hr>
+<form>
+  <div class="form-group">
+    <label>Choose Vehicle: </label>
+    <select class="custom-select" name="selectedVehicleName" [(ngModel)]="selectedVehicleName" (input)="selectedVehicle($event)">
+      <option value="default">Choose Vehicle</option>
+      <option *ngFor="let vehicle of vehicleNameList" value="{{vehicle}}">{{vehicle}}</option>
+    </select>
+  </div>
+  <div *ngIf="selectedVehicleName != 'default'">
+    <label>Choose Property: </label>
+    <select class="custom-select" name="selectedVehicleProperty" [(ngModel)]="selectedVehicleProperty" (input)="selectedProperty($event)">
+      <option value="default">Choose Property</option>
+      <option *ngFor="let props of vehiclePropertyList" value="{{props.property}},{{props.price}}">{{props?.property}}</option>
+    </select>
+  </div>
+  <div class="form-group">    
+    <input type="checkbox" name="" class="mr-1" (input)="toggleDriverFee()" [(ngModel)]="includeDriverFee">
+    <label for="">Include drive fees</label>
+  </div>
+  <div class="form-group">    
+    <input type="checkbox" name="" class="mr-1" [(ngModel)]="selectDate" (input)="toggleSelectDate()">
+    <label for="">Choose different date</label>
+  </div>
+  <div *ngIf="selectDate">
+    <div class="form-group">
+      <div class="input-group">
+        <input class="form-control" placeholder="yyyy-mm-dd" name="selectedDate" [(ngModel)]="selectedDate" ngbDatepicker #d="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="far fa-calendar-alt"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="selectedVehicleName != 'default' && selectedVehicleProperty != 'default'">
+    <p>Adding a new record for <b>{{selectedVehicleName}} ({{propertyAndPriceString}}&#8377;) on {{getDate()}}</b></p>
+    <button class="mt-3 btn btn-info" (click)="saveRentalRecord()">Add Rental Record</button>
+  </div>
+</form>

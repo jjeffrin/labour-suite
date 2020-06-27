@@ -41,7 +41,15 @@ export class VehicleListComponent implements OnInit {
     this._databaseService.getAllVehiclesByUserId(this.currentUser).subscribe((data) => {
       console.log(data);
       this.vehicleList = data;
-      this._toggleLoading();
+    });
+    this._toggleLoading();
+  }
+
+  deleteVehicle(id: string) {
+    this._databaseService.deleteVehicleByVehicleId(this.currentUser, id).then(() => {
+      alert("Vehicle deleted");
+    }).catch(() => {
+      alert("Vehicle delete failed. Try again.");
     });
   }
 }

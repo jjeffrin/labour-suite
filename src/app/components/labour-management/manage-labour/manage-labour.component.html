@@ -1,5 +1,12 @@
 <h4 class="text-muted"><i (click)="goBack()" style="cursor: pointer;" class="fas fa-arrow-circle-left text-secondary"></i> Manage {{labourData?.labourName}}'s Salary & Attendance</h4>
-<button (click)="addAttendance()" class="btn btn-info" [disabled]="!attendanceState">Add Attendance</button>
+<div class="row">
+  <div class="col-6">
+    <button (click)="addAttendance()" class="btn btn-info" [disabled]="!attendanceState">Add Attendance</button>
+  </div>
+  <div class="col-6">
+    <button class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">Add Proxy</button>
+  </div>
+</div>
 <br><br>
 <div class="row">
   <div class="col-6">
@@ -41,3 +48,30 @@
 <ng-template #noAttendanceList>
   <h5>No attendance details found for {{labourData?.labourName}}</h5>
 </ng-template>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Add Proxy Attendance</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd" name="selectedProxyDate" [(ngModel)]="selectedProxyDate" ngbDatepicker #d="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="far fa-calendar-alt"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="addProxyAttendance()" [disabled]="selectedProxyDate == undefined">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

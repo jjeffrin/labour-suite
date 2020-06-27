@@ -1,0 +1,59 @@
+<h4 class="text-muted">
+  <span><i style="cursor: pointer;" (click)="goBack()" class="fas fa-arrow-circle-left"></i></span>
+  Manage Rental
+  <i style="cursor: pointer;" class="fas fa-plus-circle" (click)="addNewRecord()"></i>
+  <div *ngIf="isLoading" class="spinner-grow text-info ml-3" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</h4>
+<hr>
+<h6>Name: {{rentalDetails?.name}}</h6>
+<h6>Location: {{rentalDetails?.location}}</h6>
+<h6>Work Type: {{rentalDetails?.natureOfWork}}</h6>
+<h6>Pending amount: &#8377;{{calculatePendingAmount()}}</h6>
+<hr>
+<h4>Records</h4>
+<hr>
+<!-- <div *ngIf="rentalRecords.length>0; else noRecords"> -->
+  <div *ngFor="let record of rentalRecords | keyvalue">
+    <div class="card">
+      <h6 class="card-header">{{record.key}} | Total expenses : &#8377;{{calculatePerDayExpense(record.key).toLocaleString("en-IN")}}</h6>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Vehicle</th>
+                <th scope="col">Property</th>
+                <th scope="col">Price (&#8377;)</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of record.value; let i=index">
+                <th scope="row">{{i+1}}</th>
+                <td>{{data.vehicleName}}</td>
+                <td>{{data.property}}</td>
+                <td>{{data.price.toLocaleString("en-IN")}}</td>
+                <td>
+                  <div class="btn-group">
+                    <button class="btn btn-secondary btn-sm" (click)="deleteRentalRecord(data.id)"><i class="fas fa-trash"></i></button>
+                    <button *ngIf="!data.isComplete" class="ml-2 btn btn-secondary btn-sm" (click)="completeRentalRecord(data.id)"><i class="fas fa-check-circle"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+      </div>
+    </div>
+    <br>
+  </div>
+<!-- </div> -->
+
+<ng-template #noRecords>
+  <p>No records found.</p>
+</ng-template>
+

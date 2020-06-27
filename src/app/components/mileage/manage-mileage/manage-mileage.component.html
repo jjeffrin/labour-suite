@@ -1,0 +1,75 @@
+<h4 class="text-muted">
+    <span><i style="cursor: pointer;" (click)="goBack()" class="fas fa-arrow-circle-left"></i></span>
+    Manage Mileage
+    <button type="button" data-toggle="modal" data-target="#exampleModalCenter"><i style="cursor: pointer;" class="fas fa-plus-circle"></i></button>
+    <div *ngIf="isLoading" class="spinner-grow text-info ml-3" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+</h4>
+<hr>
+<!-- Content -->
+<p>Vehicle Name: {{vehicleName}}</p>
+<p>Avg. Mileage: {{calculateAvgMileage()}} KMPL</p>
+<p>Total amount spent in fuel: &#8377;{{calculateTotalAmountSpentInFuel()}}</p>
+<h6>Records</h6>
+<hr>
+<div *ngIf="records.length>0; else noRecords">
+    <table class="table table-responsive">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Date</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Meter (Kms.)</th>
+            <th scope="col">Litre</th>
+            <th scope="col">Mileage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of records; let i=index">
+            <th scope="row">{{i+1}}</th>
+            <td>{{record.dateToDisplay}}</td>
+            <td>{{record.amount}}</td>
+            <td>{{record.reading}}</td>
+            <td>{{record.litre}}</td>
+            <td>{{record.mileage}}</td>
+          </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-template #noRecords>
+    <p>No records found.</p>
+</ng-template>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Add New Record</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="">Fuel Amount</label>
+                <input type="number" pattern="[0-9]*" class="form-control" [(ngModel)]="amount">
+            </div>
+            <div class="form-group">
+                <label for="">Meter Reading</label>
+                <input type="number" pattern="[0-9]*" class="form-control" [(ngModel)]="reading">
+            </div>
+            <div class="form-group">
+                <label for="">Litre</label>
+                <input type="number" pattern="[0-9]*" class="form-control" [(ngModel)]="litre">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="addNewRecord()" [disabled]="checkAddButtonState()">Add</button>
+        </div>
+      </div>
+    </div>
+</div>

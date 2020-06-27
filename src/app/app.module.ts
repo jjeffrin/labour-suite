@@ -31,6 +31,16 @@ import { ManageSourceComponent } from './components/manage-source/manage-source.
 import { ManageVehiclesComponent } from './components/manage-vehicles/manage-vehicles.component';
 import { AddVehicleComponent } from './components/manage-vehicles/add-vehicle/add-vehicle.component';
 import { VehicleListComponent } from './components/manage-vehicles/vehicle-list/vehicle-list.component';
+import { UpdateVehicleComponent } from './components/manage-vehicles/update-vehicle/update-vehicle.component';
+import { RentalsComponent } from './components/rentals/rentals.component';
+import { RentalListComponent } from './components/rentals/rental-list/rental-list.component';
+import { AddRentalComponent } from './components/rentals/add-rental/add-rental.component';
+import { ManageRentalComponent } from './components/rentals/manage-rental/manage-rental.component';
+import { AddRentalRecordComponent } from './components/rentals/add-rental-record/add-rental-record.component';
+import { EditRentalRecordComponent } from './components/rentals/edit-rental-record/edit-rental-record.component';
+import { MileageComponent } from './components/mileage/mileage.component';
+import { MileageListComponent } from './components/mileage/mileage-list/mileage-list.component';
+import { ManageMileageComponent } from './components/mileage/manage-mileage/manage-mileage.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +62,16 @@ import { VehicleListComponent } from './components/manage-vehicles/vehicle-list/
     ManageVehiclesComponent,
     AddVehicleComponent,
     VehicleListComponent,
+    UpdateVehicleComponent,
+    RentalsComponent,
+    RentalListComponent,
+    AddRentalComponent,
+    ManageRentalComponent,
+    AddRentalRecordComponent,
+    EditRentalRecordComponent,
+    MileageComponent,
+    MileageListComponent,
+    ManageMileageComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,24 @@
+<h4 class="text-muted">Add vehicle to manage mileage</h4>
+<hr>
+<div class="form-group">
+    <label for="">Choose Vehicle</label>
+    <select class="custom-select" [(ngModel)]="selectedVehicle">
+        <option value="default" selected>Choose...</option>
+        <option *ngFor="let vehicle of vehicleNameList" value="{{vehicle}}">{{vehicle}}</option>
+    </select>
+    <button *ngIf="selectedVehicle != 'default'" class="mt-2 btn btn-info" (click)="addMileage()">Add Vehicle</button>
+</div>
+<hr>
+<h4>List</h4>
+<hr>
+<div *ngIf="mileageList.length>0; else noList">
+    <div class="list-group">
+        <a href="mileage/manage-mileage/{{item.id}}" *ngFor="let item of mileageList" class="list-group-item list-group-item-action">
+            {{item.name}} > 
+        </a>
+    </div>
+</div>
+
+<ng-template #noList>
+    <p>No mileage list available.</p>
+</ng-template>

@@ -10,12 +10,13 @@
 <div *ngIf="vehicleList.length>0; else noVehicles">
     <div *ngFor="let vehicle of vehicleList">
         <div class="card">
-            <h5 class="card-header">{{vehicle?.name}}</h5>
+            <h5 class="card-header">{{vehicle?.vehicleName}}</h5>
             <div class="card-body">
-              <h5 class="card-title">Number: {{vehicle?.number}}</h5>
+              <h5 class="card-title">Number: {{vehicle?.vehicleNumber}}</h5>
               <p class="card-text">FC Date: {{vehicle?.fcDate}}</p>
               <p class="card-text">Insurance Date: {{vehicle?.insuranceDate}}</p>
-              <a href="#" class="btn btn-primary">Edit information</a>
+              <a routerLink="update-vehicle/{{vehicle?.id}}" class="btn btn-info">Edit information</a>
+              <a (click)="deleteVehicle(vehicle?.id)" class="ml-2 btn btn-danger">Delete</a>
             </div>
         </div>
         <br>

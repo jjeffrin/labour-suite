@@ -1,0 +1,24 @@
+<h4 class="text-muted">
+  Rental List
+  <i style="cursor: pointer;" class="fas fa-plus-circle" (click)="navigateToAddNewRental()"></i>
+  <div *ngIf="isLoading" class="spinner-grow text-info ml-3" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</h4>
+<hr />
+<div *ngIf="rentalList.length>0; else noRentals">
+  <div *ngFor="let rental of rentalList">
+    <div class="card">
+      <h5 class="card-header">{{rental?.name}}</h5>
+      <div class="card-body">
+        <h5 class="card-title">Location: {{rental?.location}}</h5>
+        <p class="card-text">Work Type: {{rental?.natureOfWork}}</p>
+        <a routerLink="manage-rental/{{rental?.id}}" class="btn btn-info">Manage</a>
+        <a (click)="deleteRental(rental?.id)" class="ml-2 btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #noRentals>
+  <h5 class="text-muted">No rentals found. Add one to continue.</h5>
+</ng-template>

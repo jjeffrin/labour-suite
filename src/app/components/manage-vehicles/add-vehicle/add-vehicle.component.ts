@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { VehicleType } from 'src/app/models/VehicleType';
 import { DatabaseService } from 'src/app/services/database.service';
 import { Router } from '@angular/router';
+import { range } from 'rxjs';
 
 @Component({
   selector: 'app-add-vehicle',
@@ -83,6 +84,7 @@ export class AddVehicleComponent implements OnInit {
     this.newVehicle.fcDate = fcDate;
     this.newVehicle.insuranceDate = insuranceDate;
     this._databaseService.saveVehicleByUserId(this.currentUser, this.newVehicle).then(() => {
+      //this.addVehicleToRemainders(this.currentUser, this.newVehicle);
       this.addNewVehicleForm.reset();
       this._toggleLoading();
       this.showSuccessMsg = true;
@@ -92,6 +94,29 @@ export class AddVehicleComponent implements OnInit {
     }).catch((err) => {
       console.log(err);
       this._toggleLoading();
+    });
+  }
+
+  async addVehicleToRemainders(userId: string, vehicle: VehicleType) {
+    let remainder = {
+      title: "Today is FC Date for vehicle " + vehicle.vehicleName + "(" + vehicle.vehicleNumber + ")",
+      date: vehicle.fcDate,
+      active: false
+    };
+    await this._databaseService.saveRemainders(userId, remainder).then(() => {
+      console.log("FC Remainder added.");
+    }).catch((err) => {
+      console.log("FC Remainder failed.")
+    });
+    remainder = {
+      title: "Today is Insurance Date for vehicle " + vehicle.vehicleName + "(" + vehicle.vehicleNumber + ")",
+      date: vehicle.insuranceDate,
+      active: false
+    };
+    await this._databaseService.saveRemainders(userId, remainder).then(() => {
+      console.log("Insurance Remainder added.");
+    }).catch((err) => {
+      console.log("Insurance Remainder failed.")
     });
   }
 

@@ -18,9 +18,19 @@ import { ManageSourceComponent } from './components/manage-source/manage-source.
 import { ManageVehiclesComponent } from './components/manage-vehicles/manage-vehicles.component';
 import { AddVehicleComponent } from './components/manage-vehicles/add-vehicle/add-vehicle.component';
 import { VehicleListComponent } from './components/manage-vehicles/vehicle-list/vehicle-list.component';
+import { UpdateVehicleComponent } from './components/manage-vehicles/update-vehicle/update-vehicle.component';
+import { RentalsComponent } from './components/rentals/rentals.component';
+import { RentalListComponent } from './components/rentals/rental-list/rental-list.component';
+import { AddRentalComponent } from './components/rentals/add-rental/add-rental.component';
+import { ManageRentalComponent } from './components/rentals/manage-rental/manage-rental.component';
+import { AddRentalRecordComponent } from './components/rentals/add-rental-record/add-rental-record.component';
+import { EditRentalRecordComponent } from './components/rentals/edit-rental-record/edit-rental-record.component';
+import { MileageComponent } from './components/mileage/mileage.component';
+import { MileageListComponent } from './components/mileage/mileage-list/mileage-list.component';
+import { ManageMileageComponent } from './components/mileage/manage-mileage/manage-mileage.component';
 
 const appRoutes: Routes = [
-    {        
+    {
         path: '',
         component: WrapperComponent,
         children: [
@@ -91,16 +101,60 @@ const appRoutes: Routes = [
                     {
                         path: 'add-vehicle',
                         component: AddVehicleComponent
+                    },
+                    {
+                        path: 'update-vehicle/:vehicleId',
+                        component: UpdateVehicleComponent
+                    }
+                ]
+            },
+            {
+                path: 'rentals',
+                component: RentalsComponent,
+                children: [
+                    {
+                        path: '',
+                        component: RentalListComponent
+                    },
+                    {
+                        path: 'add-rental',
+                        component: AddRentalComponent
+                    },
+                    {
+                        path: 'manage-rental/:id',
+                        component: ManageRentalComponent
+                    },
+                    {
+                        path: 'manage-rental/:id/add-rental-record',
+                        component: AddRentalRecordComponent
+                    },
+                    {
+                        path: 'manage-rental/:id/edit-rental-record/:recordId',
+                        component: EditRentalRecordComponent
+                    },
+                ]
+            },
+            {
+                path: 'mileage',
+                component: MileageComponent,
+                children: [
+                    {
+                        path: '',
+                        component: MileageListComponent
+                    },
+                    {
+                        path: 'manage-mileage/:id',
+                        component: ManageMileageComponent
                     }
                 ]
             }
         ]
-    }    
+    }
 ];
 
 @NgModule({
-    imports: [ RouterModule.forRoot(appRoutes) ],
-    exports: [ RouterModule ]
+    imports: [RouterModule.forRoot(appRoutes)],
+    exports: [RouterModule]
 })
 export class AppRoutingModule {
 

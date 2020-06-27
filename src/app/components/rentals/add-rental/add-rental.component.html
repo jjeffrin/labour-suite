@@ -1,0 +1,22 @@
+<h4 class="text-muted">
+  <span><i style="cursor: pointer;" (click)="goBack()" class="fas fa-arrow-circle-left"></i></span>
+  Add Rental
+</h4>
+<hr />
+<form>
+  <div class="form-group">
+    <label>Name</label>
+    <input class="form-control" type="text" name="rentalName" [(ngModel)]="name" />
+  </div>
+  <div class="form-group">
+    <label>Location</label>
+    <input class="form-control" type="text" name="rentalLocation" [(ngModel)]="location" />
+  </div>
+  <div class="form-group">
+    <label>Nature of work</label>
+    <input class="form-control" type="text" name="rentalNature" [(ngModel)]="natureOfWork" />
+  </div>
+  <div class="form-group">
+    <button class="btn btn-secondary" (click)="addRental()">Add</button>
+  </div>
+</form>
